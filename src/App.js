@@ -4,7 +4,8 @@ import "./App.css";
 
 function App() {
   const [code, setCode] = useState("// Escribe tu código aquí");
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState(""); // Cambiado a cadena
+  const [consoleOutput, setConsoleOutput] = useState([]); // Nuevo estado para consoleOutput
   const [error, setError] = useState("");
 
   const executeCode = async () => {
@@ -14,70 +15,78 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
       });
-
       const data = await response.json();
+      console.log("Respuesta del backend:", data); // Log para depuración
       if (response.ok) {
-        setOutput(data.result);
+        setOutput(data.result || ""); // Asigna result al estado de output
+        setConsoleOutput(data.consoleOutput || []); // Asigna consoleOutput al estado de consoleOutput
         setError("");
       } else {
-        setOutput(`Error: ${data.error}`);
-        setError(data.error);
+        setOutput("");
+        setConsoleOutput([]);
+        setError(data.error || "Error desconocido");
       }
     } catch (error) {
-      setOutput("Error al conectar con el servidor");
+      console.error("Error al conectar con el servidor:", error.message); // Log para depuración
+      setOutput("");
+      setConsoleOutput([]);
       setError("Error al conectar con el servidor");
     }
   };
 
   const options = {
     selectOnLineNumbers: true,
-    automaticLayout: true, // Ajusta el tamaño automáticamente.
+    automaticLayout: true,
     scrollbar: {
-      vertical: 'visible',
-      horizontal: 'visible',
+      vertical: "visible",
+      horizontal: "visible",
       verticalScrollbarSize: 8,
       horizontalScrollbarSize: 8,
-      verticalSliderSize: 8,
-      horizontalSliderSize: 8,
-      useShadows: false
-  },
-  minimap: {
+      useShadows: false,
+    },
+    minimap: {
       enabled: false,
-  }
+    },
   };
 
   return (
     <div className="app-container">
-        <div className="editor-container">
-            <MonacoEditor
-                language="javascript"
-                theme="vs-dark"
-                value={code}
-                options={options}
-                onChange={(newCode) => setCode(newCode)}
-            />
-            <button onClick={executeCode} className="execute-button">
-                Ejecutar
-            </button>
-        </div>
-        <div className="console-container">
-            <h2>Fuck Off RunJS</h2>
-            {output && (
-                <pre className="output">
-                    <br />
-                    {output}
-                </pre>
-            )}
-            {error && (
-                <pre className="error">
-                    <strong>Error:</strong>
-                    <br />
-                    {error}
-                </pre>
-            )}
-        </div>
+      <div className="editor-container">
+        <MonacoEditor
+          language="javascript"
+          theme="vs-dark"
+          value={code}
+          options={options}
+          onChange={(newCode) => setCode(newCode)}
+        />
+        <button onClick={executeCode} className="execute-button">
+          Ejecutar
+        </button>
+      </div>
+      <div className="console-container">
+        <h2>Resultados</h2>
+        {output && (
+          <pre className="output">
+            {output}
+          </pre>
+        )}
+        {consoleOutput.length > 0 && (
+          <pre className="console-output">
+            {consoleOutput.map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}
+          </pre>
+        )}
+        {error && (
+          <pre className="error">
+            <strong>Error:</strong>
+            <br />
+            {error}
+          </pre>
+        )}
+      </div>
     </div>
-);
+  );
 }
 
 export default App;
