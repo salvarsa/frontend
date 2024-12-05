@@ -15,19 +15,21 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
       });
+
       const data = await response.json();
-      console.log("Respuesta del backend:", data); // Log para depuración
+      console.log("Respuesta del backend:", data); // Debug para confirmar datos
+
       if (response.ok) {
-        setOutput(data.result || ""); // Asigna result al estado de output
-        setConsoleOutput(data.consoleOutput || []); // Asigna consoleOutput al estado de consoleOutput
-        setError("");
+        setOutput(data.result.toString() || ""); // Actualiza output
+        setConsoleOutput(data.consoleOutput || []); // Actualiza consoleOutput
+        setError(""); // Limpia error
       } else {
-        setOutput("");
-        setConsoleOutput([]);
+        setOutput(""); // Limpia output
+        setConsoleOutput([]); // Limpia consoleOutput
         setError(data.error || "Error desconocido");
       }
     } catch (error) {
-      console.error("Error al conectar con el servidor:", error.message); // Log para depuración
+      console.error("Error al conectar con el servidor:", error.message);
       setOutput("");
       setConsoleOutput([]);
       setError("Error al conectar con el servidor");
@@ -40,6 +42,7 @@ function App() {
     scrollbar: {
       vertical: "visible",
       horizontal: "visible",
+      color: "#F0DB4F",
       verticalScrollbarSize: 8,
       horizontalScrollbarSize: 8,
       useShadows: false,
@@ -64,25 +67,33 @@ function App() {
         </button>
       </div>
       <div className="console-container">
-        <h2>Resultados</h2>
+        <h2>Fuck Off RunJS</h2>
+
+        {/* Renderiza el resultado */}
         {output && (
-          <pre className="output">
-            {output}
-          </pre>
+          <div>
+            <pre className="output">{output}</pre>
+          </div>
         )}
+
+        {/* Renderiza la salida de consola */}
         {consoleOutput.length > 0 && (
-          <pre className="console-output">
-            {consoleOutput.map((line, index) => (
-              <div key={index}>{line}</div>
-            ))}
-          </pre>
+          <div>
+            <strong>Salida de Consola:</strong>
+            <pre className="console-output">
+              {consoleOutput.map((line, index) => (
+                <div key={index}>{line}</div>
+              ))}
+            </pre>
+          </div>
         )}
+
+        {/* Renderiza errores */}
         {error && (
-          <pre className="error">
+          <div>
             <strong>Error:</strong>
-            <br />
-            {error}
-          </pre>
+            <pre className="error">{error}</pre>
+          </div>
         )}
       </div>
     </div>
@@ -90,3 +101,5 @@ function App() {
 }
 
 export default App;
+
+
