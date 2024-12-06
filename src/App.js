@@ -30,7 +30,7 @@ function App() {
       }
     } catch (error) {
       console.error("Error al conectar con el servidor:", error.message);
-      setOutput("");
+      setOutput([]);
       setConsoleOutput([]);
       setError("Error al conectar con el servidor");
     }
@@ -67,22 +67,27 @@ function App() {
         </button>
       </div>
       <div className="console-container">
-        <h2>Fuck Off RunJS</h2>
-
-        {/* Renderiza el resultado */}
+        <h2>forJS</h2>
         {output && (
           <div>
             <pre className="output">{output}</pre>
           </div>
         )}
-
-        {/* Renderiza la salida de consola */}
         {consoleOutput.length > 0 && (
           <div>
-            <strong>Salida de Consola:</strong>
+            <strong></strong>
             <pre className="console-output">
               {consoleOutput.map((line, index) => (
-                <div key={index}>{line}</div>
+                <div key={index} className={`console-${line.type}`}>
+                  {line.type.toUpperCase()}:{" "}
+                  {line.arguments.map((arg, idx) => (
+                    <span key={idx}>
+                      {typeof arg === "object"
+                        ? JSON.stringify(arg, null, 2)
+                        : arg}
+                    </span>
+                  ))}
+                </div>
               ))}
             </pre>
           </div>
@@ -101,5 +106,3 @@ function App() {
 }
 
 export default App;
-
-
