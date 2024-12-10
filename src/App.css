@@ -55,11 +55,30 @@
 
 /* Estilo de mensajes en la consola */
 .output {
-  color: #00ff00; /* Color para mensajes de salida */
-  white-space: pre-wrap; /* Ajusta el texto automáticamente */
+  color: #D4BE2F; /* Color para mensajes de salida */
+  white-space: pre-wrap; 
 }
 
 .error {
-  color: #ff0000; /* Color para errores */
+  color: #ff0000; 
   white-space: pre-wrap;
+}
+
+.console-log {
+  color: #ffffff; 
+}
+.console-warn {
+  color: #ffcc00; 
+}
+.console-error {
+  color: #ff0000; 
+}
+.console-info {
+  color: #00ccff; 
+}
+.console-debug {
+  color: #aaaaaa; 
+}
+.console-assert {
+  color: #ff4500; 
 }
