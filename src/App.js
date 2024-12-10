@@ -18,7 +18,7 @@ function App() {
       const data = await response.json();
       console.log("Respuesta del backend:", data); // Log para depuración
       if (response.ok) {
-        setOutput(data.result || ""); // Asigna result al estado de output
+        setOutput(data.result || JSON.stringify(data.result)); // Asigna result al estado de output
         setConsoleOutput(data.consoleOutput || []); // Asigna consoleOutput al estado de consoleOutput
         setError("");
       } else {
@@ -64,7 +64,7 @@ function App() {
         </button>
       </div>
       <div className="console-container">
-        <h2>Resultados</h2>
+        <h2>Fuck Off RunJS</h2>
         {output && (
           <pre className="output">
             {output}
